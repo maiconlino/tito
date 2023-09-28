@@ -1,0 +1,8 @@
+click
+lime
+Flask
+gunicorn	
+pandas
+numpy
+scipy
+scikit-learn

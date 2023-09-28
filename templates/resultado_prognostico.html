@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>tito - uma ferramenta para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="static/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/main.css" rel="stylesheet">
+    <style>
+        .custom-range::-webkit-slider-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-moz-range-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-ms-thumb {
+        background: #bb6054;
+        }
+        canvas {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+    </style>
+  <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
+  <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+  <script src="https://unpkg.com/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.js"></script>
+  
+</head>
+
+
+<body>
+
+  
+  <!-- ======= Header ======= -->
+  <section id="topbar" class="topbar d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="d-flex align-items-center">dotLab Brazil</i>
+      </div>
+      <div class="social-links d-none d-md-flex align-items-center">
+        <div>  
+          {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+            Olá, <strong>{{ session["nomeCompleto"] }}</strong> seja bem-vindo(a)! <a href="/logout">Sair</a>
+          {% else %}
+              <!-- O código para caso o usuário seja vazio -->
+          {% endif %}
+      
+        </div>
+        <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </section><!-- End Top Bar -->
+
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="static/assets/img/logo.png" alt=""> -->
+        <img src="static/img/tito_logo_fb.png" width="120px" class="scroll-logo d-none">
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/#about">Sobre nós</a></li>
+          <li><a href="/#faq">Perguntas frequentes</a></li>
+          <li><a href="/cadastro">Cadastre-se</a></li>
+          <li><a href="/fazerlogin">Faça login</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header><!-- End Header -->
+  
+  <script>
+    window.addEventListener('scroll', function() {
+      var scrollLogo = document.querySelector('.scroll-logo');
+      if (window.scrollY > 0) {
+        scrollLogo.classList.remove('d-none');
+      } else {
+        scrollLogo.classList.add('d-none');
+      }
+    });
+  </script>
+  
+  <!-- End Header -->
+  <!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero">
+    <div class="container position-relative">
+      <div class="row gy-5 justify-content-center align-items-center" data-aos="fade-in">
+        <div class="col-lg-6 order-2 order-lg-1 text-center">
+          <img src="static/img/tito_logo_fb.png" width="90%" />
+          <h2><span>Prognóstico</span></h2>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="icon-boxes position-relative">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+
+                
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+
+  <main id="main">
+    
+    <section class="d-flex align-items-center justify-content-center" style="text-align: center;">
+      <div  data-aos="fade-up" >
+        
+          {% if tipopredito == "cura" %}
+          <h3 style="color: #593734;">A <strong>probabilidade</strong> do prognóstico foi de <strong>{{ percentual }}%</strong> de <strong>cura</strong>
+         {% else %}
+          <h3 style="color: #593734;">A <strong>probabilidade</strong> do prognóstico foi de <strong>{{ percentual }}%</strong>de <strong>óbito</strong>
+         {% endif %}
+        </h3>
+       <div>
+         <div id="canvas-holder" style="width:100%">
+           <canvas id="chart"></canvas>
+           <h3>Probabilidade</h3>
+         </div>
+       </div>
+      </div>
+    </section>
+  
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>tito</span>
+          </a>
+          <p>Esperamos que a tito possa auxiliar os profissionais de saúde no prognóstico da tuberculose.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Links úteis</h4>
+          <ul>
+            <li><a href="https://www.who.int/pt" target="_blank">OMS</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br"  target="_blank">Ministério da Saúde</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sus"  target="_blank">SUS</a></li>
+            <li><a href="https://portalsinan.saude.gov.br/"  target="_blank">SINAN</a></li>
+          </ul>
+        </div>
+
+        
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contate-nos</h4>
+          <p>
+            R. Benfica, 455 <br>
+            Recife, Pernambuco<br>
+            Brasil <br><br>
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram" target="_blank" style="color:aliceblue"><i class="bi bi-instagram"></i>dotLAB Brazil</a><br>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="copyright credits">
+          Baseado em &copy; Copyright <strong><span>Impact</span></strong> Design estrutural por <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>. Imagens e logomarca feitas por <a href="https://www.instagram.com/davidmarquesart/" class="instagram" target="_blank"><i class="bi bi-instagram"></i>David Marques</a>. Todos os direitos reservados.
+        </div>
+      </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+ 
+  <!-- Vendor JS Files -->
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+  <script src="static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+  <script>
+    var randomScalingFactor = function() {
+  return Math.round(Math.random() * 100);
+};
+
+var randomData = function () {
+  return [
+    randomScalingFactor(),
+    randomScalingFactor(),
+    randomScalingFactor()
+  ];
+};
+
+var randomValue = function (data) {
+  return Math.max.apply(null, data) * Math.random();
+};
+
+var data = [50,75,90,100];
+var value = {{ percentual }};
+
+var config = {
+  type: 'gauge',
+  {% if tipopredito == "cura" %}
+    data: {
+      labels: ['Baixa', 'Média', 'Alta', 'Altíssima'],
+      datasets: [{
+        data: data,
+        value: value,
+        //backgroundColor: [ '#ff6384', '#ffc235', '#38a2eb', '#00bf63'],
+        backgroundColor: [ '#99e5c3 ', '#66d8a6', '#33cb88', '#00be6a'],
+        borderWidth: 2
+      }]
+    },
+  {% else %}
+    data: {
+        labels: ['Baixa', 'Média', 'Alta', 'Altíssima'],
+        datasets: [{
+          data: data,
+          value: value,
+         // backgroundColor: ['#00bf63' , '#ffc235', '#38a2eb', '#ff6384'],
+          backgroundColor: ['#f3b0b5' , '#ee888f', '#e8616a', '#e23945'],
+         
+          borderWidth: 2
+        }]
+      },
+  {% endif %}
+
+  
+  options: {
+    responsive: true,
+    title: {
+      display: false,
+      text: 'Probabilidade do prognóstico da tuberculose'
+    },
+    layout: {
+      padding: {
+        bottom: 30
+      }
+    },
+    needle: {
+      // Needle circle radius as the percentage of the chart area width
+      radiusPercentage: 2,
+      // Needle width as the percentage of the chart area width
+      widthPercentage: 3.2,
+      // Needle length as the percentage of the interval between inner radius (0%) and outer radius (100%) of the arc
+      lengthPercentage: 80,
+      // The color of the 
+      {% if tipopredito == "cura" %}
+        color: '#395649'
+      {% else %}
+        color: '#711d23'
+      {% endif %}
+      
+    },
+    valueLabel: {
+      //formatter: Math.round,
+      display: false,
+      color: "#593734",
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    },
+    plugins: {
+      datalabels: {
+        display: true,
+        formatter:  function (value, context) {
+          return context.chart.data.labels[context.dataIndex];
+        },
+        //color: function (context) {
+        //  return context.dataset.backgroundColor;
+        //},
+        {% if tipopredito == "cura" %}
+        color: '#24362e',
+        {% else %}
+          color: '#390f12',
+        {% endif %}
+        
+        //color: 'rgba(255, 255, 255, 1.0)',
+        //backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        font: {
+          size: 24
+        }
+      }
+    }
+  }
+};
+
+window.onload = function() {
+  var ctx = document.getElementById('chart').getContext('2d');
+  window.myGauge = new Chart(ctx, config);
+};
+
+document.getElementById('randomizeData').addEventListener('click', function() {
+  config.data.datasets.forEach(function(dataset) {
+    dataset.data = randomData();
+    dataset.value = randomValue(dataset.data);
+  });
+
+  window.myGauge.update();
+});
+  </script>
+
+
+</body>
+
+</html>

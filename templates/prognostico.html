@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>tito - uma ferramenta para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="static/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/main.css" rel="stylesheet">
+    <style>
+        .custom-range::-webkit-slider-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-moz-range-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-ms-thumb {
+        background: #bb6054;
+        }
+    </style>
+    <script>
+      // Função para exibir a modal de carregamento
+function exibirModalCarregamento() {
+    $('#loadingModal').modal('show');
+}
+
+// Função para ocultar a modal de carregamento
+function ocultarModalCarregamento() {
+    $('#loadingModal').modal('hide');
+}
+
+// Função para submeter o formulário
+function submeterFormulario() {
+    exibirModalCarregamento();
+
+    // Aguardar um breve período para exibir a modal de carregamento antes de enviar o formulário
+    setTimeout(function() {
+        $('#FORMULARIOPROGNOSTICO').submit();
+    }, 500); // Ajuste o tempo de espera (em milissegundos) conforme necessário
+}
+
+    </script>
+</head>
+
+<body>
+
+
+<!-- Modal de carregamento -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loadingModalLabel">Aguarde...</h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa fa-spinner fa-spin fa-3x"></i>
+                    <p>Estamos usando <strong>inteligência artificial</strong> para prever o prognóstico da tuberculose, por favor aguarde.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- ======= Header ======= -->
+  <section id="topbar" class="topbar d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="d-flex align-items-center">dotLab Brazil</i>
+      </div>
+      <div class="social-links d-none d-md-flex align-items-center">
+        <div>  
+          {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+            Olá, <strong>{{ session["nomeCompleto"] }}</strong> seja bem-vindo(a)! <a href="/logout">Sair</a>
+          {% else %}
+              <!-- O código para caso o usuário seja vazio -->
+          {% endif %}
+      
+        </div>
+        <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </section><!-- End Top Bar -->
+
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="static/assets/img/logo.png" alt=""> -->
+        <img src="static/img/tito_logo_fb.png" width="120px" class="scroll-logo d-none">
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/#about">Sobre nós</a></li>
+          <li><a href="/#faq">Perguntas frequentes</a></li>
+          <li><a href="/cadastro">Cadastre-se</a></li>
+          <li><a href="/fazerlogin">Faça login</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header><!-- End Header -->
+  
+  <script>
+    window.addEventListener('scroll', function() {
+      var scrollLogo = document.querySelector('.scroll-logo');
+      if (window.scrollY > 0) {
+        scrollLogo.classList.remove('d-none');
+      } else {
+        scrollLogo.classList.add('d-none');
+      }
+    });
+  </script>
+  
+  <!-- End Header -->
+  <!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero">
+   
+
+
+    <div class="container position-relative">
+      <div class="row gy-5 justify-content-center align-items-center" data-aos="fade-in">
+        <div class="col-lg-6 order-2 order-lg-1 text-center">
+          <img src="static/img/tito_logo_fb.png" width="90%" />
+          <h2><span>Prognóstico</span></h2>
+          <h3>Preencha abaixo os onze atributos com os dados do paciente e veja o resultado do prognóstico da tuberculose</h3>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="icon-boxes position-relative">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+
+                
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+
+  <main id="main">
+ <!-- ======= About Us Section ======= -->
+ <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+     
+      {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+        <div class="row">
+          <button class="btn btn-outline-danger col-lg-3" onclick="window.location.href='/pacientes'">Cadastrar pacientes</button>&nbsp;
+          <button class="btn btn-outline-danger col-lg-3" onclick="window.location.href='/pacientes_ver'">Consultar pacientes cadastrados</button>
+        </div>
+        <br/>
+      {% else %}
+      {% endif %}
+        <h2 id="tituloFormulario">Preencha os dados do paciente</h2>
+        <form action="/prognostico_form" method="POST" id="FORMULARIOPROGNOSTICO"> 
+          <div id="first-screen">
+
+
+
+                {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+
+                         
+                          <div class="form-group row">
+                            <label for="form_paciente" class="col-sm-4 col-form-label"><h5>Paciente:</h5></label>
+                            <div class="col-sm-8">
+                              <select class="form-select form-control-lg" id="form_paciente" name="form_paciente" required>
+                                <option selected disabled value="">selecione...</option>
+                                {% for paciente in pacientes %}
+                                  <option value={{ paciente.id ~ "|" ~ paciente.dataDoDiagnostico }}>{{ paciente.nomeCompletoAbreviadoComIdCriptografado }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                  {% else %}
+                  {% endif %}
+
+                  <div class="form-group row">
+                    <label for="form_idade_do_paciente" class="col-sm-4 col-form-label"><h5>Idade:</h5></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control form-control-lg" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="30" id="form_idade_do_paciente" name="form_idade_do_paciente" required>
+                      <input type="range" class="form-range custom-range" value="30" min="0" max="130" step="1" id="var_idade" oninput="document.getElementById('form_idade_do_paciente').value = this.value">
+                    </div>
+                  </div>
+              
+                  <div class="form-group row">
+                    <label for="form_tipo_de_tratamento" class="col-sm-4 col-form-label"><h5>Tipo de entrada no tratamento:</h5></label>
+                    <div class="col-sm-8">
+                      <select class="form-select form-control-lg" id="form_tipo_de_tratamento" name="form_tipo_de_tratamento" required>
+                        <option selected disabled value="">selecione...</option>
+                        <option value="1">1. Caso novo</option>
+                        <option value="2">2. Recidiva</option>
+                        <option value="3">3. Reingresso após abandono</option>
+                        <option value="4">4. Não sabe</option>
+                        <option value="5">5.Transferência</option>
+                        <option value="6">6. Pós-óbito</option>
+                      </select>
+                    </div>
+                  </div>
+              
+                  <div class="form-group row">
+                  <label  for="form_radiografia_torax" class="col-sm-4 col-form-label"><h5>Radiografia do tórax:</h5></label>
+                  <div class="col-sm-8">
+                  <select class="form-select form-control-lg" id="form_radiografia_torax" name="form_radiografia_torax" required>
+                    <option selected disabled value="">selecione...</option>
+                    <option value="1">1. Suspeito</option>
+                    <option value="2">2. Normal</option>
+                    <option value="3">3. Outra patologia</option>
+                    <option value="4">4. Não realizado</option>
+                  </select>
+                  </div>
+              </div>
+             
+
+
+              <div class="form-group row">
+                <label for="form_teste_tuberculinio" class="col-sm-4 col-form-label"><h5>Teste tuberculíneo:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_teste_tuberculinio" name="form_teste_tuberculinio" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Não reator</option>
+                  <option value="2">2. Reator fraco</option>
+                  <option value="3">3. Reator forte</option>
+                  <option value="4">4. Não realizado</option>
+                </select>
+              </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="form_forma_da_tuberculose" class="col-sm-4 col-form-label"><h5>Forma da tuberculose:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_forma_da_tuberculose" name="form_forma_da_tuberculose" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Pulmonar</option>
+                  <option value="2">2. Extrapulmonar</option>
+                  <option value="3">3. Pulmonar + Extrapulmonar</option>
+                </select>
+                </div>
+              </div>
+              
+              
+              <div class="form-group row">
+                <label  for="form_agravos_doenca_mental" class="col-sm-4 col-form-label"><h5>Agravos associados a doença mental:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_agravos_doenca_mental" name="form_agravos_doenca_mental" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Sim</option>
+                  <option value="2">2. Não</option>
+                  <option value="3">3. Ignorado</option>
+                </select>
+              </div>
+                </div>
+                <br/s>
+                <div class="form-group row">
+                  <!-- Elemento de alerta -->
+                  <div id="alert-message" class="alert alert-danger" style="display: none;"></div>
+                  <div class="col-md-6 offset-md-3 text-center">
+                    <button class="btn next-btn" type="button" style="background-color: #ebb5ae;">Próxima <i class="bi bi-arrow-bar-right"></i></button>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div id="second-screen" style="display: none;">
+
+                <div class="form-group row">
+                <label for="form_hiv" class="col-sm-4 col-form-label"><h5>Resultado do teste de HIV:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_hiv" name="form_hiv" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Positivo</option>
+                  <option value="2">2. Negativo</option>
+                  <option value="3">3. Em andamento</option>
+                  <option value="4">4. Não se aplica</option>
+                </select>
+              </div>
+                </div>
+              
+
+                <div class="form-group row">
+                <label for="form_bacilosc_e" class="col-sm-4 col-form-label"><h5>Baciloscopia de escarro – 1ª amostra:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_bacilosc_e" name="form_bacilosc_e" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Positiva</option>
+                  <option value="2">2. Negativa</option>
+                  <option value="3">3. Não realizada</option>
+                  <option value="4">4. Não se aplica</option>
+                </select>
+              </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="form_bacilosc_e2" class="col-sm-4 col-form-label"><h5>Baciloscopia de escarro – 2ª amostra:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_bacilosc_e2" name="form_bacilosc_e2" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Positiva</option>
+                  <option value="2">2. Negativa</option>
+                  <option value="3">3. Não realizada</option>
+                  <option value="4">4. Não se aplica</option>
+                </select>
+              </div>
+              </div>  
+           
+
+
+              <div class="form-group row">
+                <label for="form_bacilosc_6" class="col-sm-4 col-form-label"><h5>Baciloscopia de escarro no 6º mês:</h5></label>
+                <div class="col-sm-8">
+                <select class="form-select" id="form_bacilosc_6" name="form_bacilosc_6" required>
+                  <option selected disabled value="">selecione...</option>
+                  <option value="1">1. Positiva</option>
+                  <option value="2">2. Negativa</option>
+                  <option value="3">3. Não realizada</option>
+                  <option value="4">4. Não se aplica</option>
+                </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="form_dias_em_tratamento" class="col-sm-4 col-form-label"><h5>Dias em tratamento:</h5></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="0" id="form_dias_em_tratamento" name="form_dias_em_tratamento">
+                  <small id="mensagem" class="text-danger"></small>
+                </div>
+              </div>
+                <br/>
+                <div class="form-group row">
+                  <div class="col-md-6 offset-md-3 text-center">
+                    <button class="btn prev-btn" type="button" style="background-color: #ebb5ae;"><i class="bi bi-arrow-bar-left"></i> Anterior</button>
+                    <button class="btn btn-danger" type="button" onclick="submeterFormulario()">Calcular o prognóstico</button>
+                  </div>
+                </div>
+                <br/>
+                
+                
+              </div>
+        </form>
+
+    </div>
+  </section><!-- End About Us Section -->
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>tito</span>
+          </a>
+          <p>Esperamos que a tito possa auxiliar os profissionais de saúde no prognóstico da tuberculose.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Links úteis</h4>
+          <ul>
+            <li><a href="https://www.who.int/pt" target="_blank">OMS</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br"  target="_blank">Ministério da Saúde</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sus"  target="_blank">SUS</a></li>
+            <li><a href="https://portalsinan.saude.gov.br/"  target="_blank">SINAN</a></li>
+          </ul>
+        </div>
+
+        
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contate-nos</h4>
+          <p>
+            R. Benfica, 455 <br>
+            Recife, Pernambuco<br>
+            Brasil <br><br>
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram" target="_blank" style="color:aliceblue"><i class="bi bi-instagram"></i>dotLAB Brazil</a><br>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="copyright credits">
+          Baseado em &copy; Copyright <strong><span>Impact</span></strong> Design estrutural por <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>. Imagens e logomarca feitas por <a href="https://www.instagram.com/davidmarquesart/" class="instagram" target="_blank"><i class="bi bi-instagram"></i>David Marques</a>. Todos os direitos reservados.
+        </div>
+      </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+  <script src="static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var firstScreen = document.getElementById("first-screen");
+      var secondScreen = document.getElementById("second-screen");
+      var nextBtn = document.querySelector(".next-btn");
+      var prevBtn = document.querySelector(".prev-btn");
+      var alertMessage = document.getElementById("alert-message");
+  
+      nextBtn.addEventListener("click", function() {
+        var inputs = firstScreen.getElementsByTagName("input");
+        var selects = firstScreen.getElementsByTagName("select");
+        var isValid = true;
+  
+        for (var i = 0; i < inputs.length; i++) {
+          if (inputs[i].hasAttribute("required") && inputs[i].value.trim() === "") {
+            isValid = false;
+            break;
+          }
+        }
+  
+        if (isValid) {
+          for (var i = 0; i < selects.length; i++) {
+            var selectedOption = selects[i].options[selects[i].selectedIndex];
+  
+            if (selectedOption.disabled) {
+              isValid = false;
+              break;
+            }
+          }
+        }
+  
+        if (isValid) {
+          firstScreen.style.display = "none";
+          secondScreen.style.display = "block";
+        } else {
+          showAlertMessage("Preencha todos os campos obrigatórios e selecione opções válidas.");
+        }
+      });
+  
+      prevBtn.addEventListener("click", function() {
+        firstScreen.style.display = "block";
+        secondScreen.style.display = "none";
+      });
+  
+      function showAlertMessage(message) {
+        alertMessage.textContent = message;
+        alertMessage.style.display = "block";
+        setTimeout(function() {
+          alertMessage.style.opacity = "0";
+          setTimeout(function() {
+            alertMessage.style.display = "none";
+            alertMessage.style.opacity = "1";
+          }, 3000);
+        }, 3000);
+      }
+    });
+
+
+
+
+  $(document).ready(function() {
+  // Quando o campo form_paciente for alterado
+  $('#form_paciente').change(function() {
+    // Obtém o valor selecionado do campo form_paciente
+    var pacienteSelecionado = $(this).val();
+    
+    // Verifica se foi selecionado um paciente válido
+    if (pacienteSelecionado) {
+      // Divide o valor do paciente selecionado usando o caracter |
+      var pacienteData = pacienteSelecionado.split('|');
+      var pacienteId = pacienteData[0];
+      var dataDiagnostico = pacienteData[1];
+      
+      // Calcula a quantidade de dias entre a data do diagnóstico e a data atual
+      var dataAtual = new Date();
+      var diasEmTratamento = Math.floor((dataAtual - new Date(dataDiagnostico)) / (1000 * 60 * 60 * 24));
+      
+      // Preenche o campo form_dias_em_tratamento com o resultado
+      $('#form_dias_em_tratamento').val(diasEmTratamento);
+      
+      // Formata a data do diagnóstico no formato brasileiro (DD/MM/AAAA)
+      var dataFormatada = new Date(dataDiagnostico).toLocaleDateString('pt-BR');
+      var dataAtualFormatada = new Date(dataAtual).toLocaleDateString('pt-BR');
+      
+      // Atualiza a mensagem abaixo do campo
+      $('#mensagem').text('Calculamos os dias em tratamento considerando a diferença entre a data do diagnóstico (' + dataFormatada + ') e a data atual (' + dataAtualFormatada + ').');
+   
+    }
+  });
+});
+
+  </script>
+
+
+</body>
+
+</html>

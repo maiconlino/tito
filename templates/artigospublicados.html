@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>tito - uma ferramenta para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="static/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/main.css" rel="stylesheet">
+    <style>
+        .custom-range::-webkit-slider-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-moz-range-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-ms-thumb {
+        background: #bb6054;
+        }
+    </style>
+    
+</head>
+
+<body>
+
+
+
+
+  <!-- ======= Header ======= -->
+  <section id="topbar" class="topbar d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="d-flex align-items-center">dotLab Brazil</i>
+      </div>
+      <div class="social-links d-none d-md-flex align-items-center">
+        <div>  
+          {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+            Olá, <strong>{{ session["nomeCompleto"] }}</strong> seja bem-vindo(a)! <a href="/logout">Sair</a>
+          {% else %}
+              <!-- O código para caso o usuário seja vazio -->
+          {% endif %}
+      
+        </div>
+        <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </section><!-- End Top Bar -->
+
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="static/assets/img/logo.png" alt=""> -->
+        <img src="static/img/tito_logo_fb.png" width="120px" class="scroll-logo d-none">
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/#about">Sobre nós</a></li>
+          <li><a href="/#faq">Perguntas frequentes</a></li>
+          <li><a href="/cadastro">Cadastre-se</a></li>
+          <li><a href="/fazerlogin">Faça login</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header><!-- End Header -->
+  
+  <script>
+    window.addEventListener('scroll', function() {
+      var scrollLogo = document.querySelector('.scroll-logo');
+      if (window.scrollY > 0) {
+        scrollLogo.classList.remove('d-none');
+      } else {
+        scrollLogo.classList.add('d-none');
+      }
+    });
+  </script>
+  
+  <!-- End Header -->
+  <!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero">
+    <div class="container position-relative">
+      <div class="row gy-5" data-aos="fade-in">
+        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-lg-start">
+          <h2><span>Artigos publicados</span></h2>
+          <p>Abaixo está a lista dos principais trabalhos publicados relacionados a tito (DeepTub)</i>.</p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="icon-boxes position-relative">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+
+                
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+
+  <main id="main">
+ <!-- ======= About Us Section ======= -->
+ <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+        <br/>
+        <h2 id="tituloFormulario">Artigos publicados em <i>journal</i>/revista:</h2>
+        <div class="list-group">
+          <ul class="list-group">
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Guto Santos; Maria Gabriela de Almeida Rodrigues, Vanderson Sampaio, Theodore Lynn and Patricia Takako Endo. <strong>Brazilian classified data set for prognosis of tuberculosis, between January 2001 and April 2020</strong>. Scientific Data Nature - 2023, <a href="https://www.nature.com/articles/s41597-022-01892-4" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li>
+
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Geovanne Oliveira Alves; Lubnnia Morais Florêncio Souza; Elisson da Silva Rocha; João Fausto Lorenzato de Oliveira;Theo  Lynn; Vanderson Sampaio and Patricia Takako Endo. <strong>Benchmarking machine learning models to assist in the prognosis of tuberculosis</strong>. Informatics (MDPI) - 2021, <a href="https://www.mdpi.com/2227-9709/8/2/27" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a>
+            </li>
+
+          </ul>
+        </div>
+
+        <br/>
+        <h2 id="tituloFormulario">Artigos publicados em conferências:</h2>
+        <div class="list-group">
+          <ul class="list-group">
+
+
+            <li class="list-group-item">Morgana Thalita da Silva Leite; Maicon Herverton Lino Ferreira da Silva Barros; Élisson da Silva Rocha; Jady Shayenne Mota Cordeiro; Vanderson Sampaio and Patricia Takako Endo. <strong>Evaluating a deep learning model in integrated health databases to aid in the prognosis of tuberculosis</strong>. CISTI`23, 18th Iberian Conference on Information Systems and Technologies, 2023, Aveiro-Portugal. Aprovado</li>
+            
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Vanderson Sampaio and Patricia Takako Endo. <strong>Machine learning model to classification in the prognosis of tuberculosis using real data from Brazil</strong>. CISTI’23, 18th Iberian Conference on Information Systems and Technologies, 2023, Aveiro-Portugal. Aprovado</li>
+
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Sebastião Rogério da Silva Neto; Vanderson Sampaio and Patricia Takako Endo. <strong>How Machine Learning Can Help the Classification of Treatment Outcomes of Tuberculosis: A Systematic Review</strong>. 56 Hawaii International Conference on System Sciences (HICSS) 2023 - <a href="https://scholarspace.manoa.hawaii.edu/items/e05e3760-ea30-4129-9d1c-10c77c52e402" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li>
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Vanderson Sampaio and Patricia Takako Endo. <strong>Treinamento e avaliação de um modelo SVM utilizando a base de dados nacional do SINAN-TB de 2001 a 2019 para auxiliar no resultado do tratamento da tuberculose</strong>. Anais da Mostra de Extensão, Inovação e Pesquisa 2022 - <a href="http://revistas.poli.br/index.php/anais/article/view/2236" target="_blank">Publicado <i class="bi bi-journal-text"></i><i class="bi bi-trophy-fill"></i>
+
+            </a></li>
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Vanderson Sampaio and Patricia Takako Endo. <strong>Avaliação de modelos de machine learning utilizando a base de dados nacional do SINAN-TB de 2001 a 2019 para auxiliar no prognóstico da tuberculose</strong>. Anais da Mostra de Extensão, Inovação e Pesquisa 2021 - <a href="http://revistas.poli.br/index.php/anais/article/view/1779" target="_blank">Publicado <i class="bi bi-journal-text"></i></a></li> 
+
+
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Morgana Thalita da Silva Leite; Vanderson Sampaio; Theo Lynn and Patricia Takako Endo. <strong>Application and analysis of record linkage techniques to integrate Brazilian health databases</strong>. International Conference on Cyber Situational Awareness, Data Analytics and Assessment (CyberSA) 2020 - <a href="https://ieeexplore.ieee.org/document/9139699" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li>
+
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Vanderson Sampaio and Patricia Takako Endo. <strong>Aplicação de técnicas de record linkage e feature selection para análise e seleção de características em uma base de dados integrada do SINAN</strong>. Anais da Mostra de Extensão, Inovação e Pesquisa 2020 - <a href="http://revistas.poli.br/index.php/anais/article/view/1483" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li>
+
+            <li class="list-group-item">Morgana Thalita da Silva Leite; Maicon Herverton Lino Ferreira da Silva Barros; Vanderson Sampaio and Patricia Takako Endo. <strong>Utilizando Soundex e Metaphone Br Para a Criação de uma Base de Dados de Saúde Integrada Para Predição de Morte por Tuberculose</strong>. Semana Científica do Agreste Pernambucano (SECAP) 2020 - <a href="https://www.scribd.com/document/526904257/Anais-II-Secap-2020" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li>
+
+
+          </ul>
+        </div>
+
+        <br/>
+        <h2 id="tituloFormulario">Dataset publicado:</h2>
+        <div class="list-group">
+          <ul class="list-group">
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Guto Santos; Vanderson Sampaio, Theodore Lynn and Patricia Takako Endo. <strong>A Brazilian classified dataset for prognosis of tuberculosis</strong>. Mendeley Data - 2022, <a href="https://data.mendeley.com/datasets/fkpfd5b9n9" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li> 
+          </ul>
+        </div>
+
+        <br/>
+        <h2 id="tituloFormulario">Registro de Programa de Computador INPI:</h2>
+        <div class="list-group">
+          <ul class="list-group">
+            <li class="list-group-item">Maicon Herverton Lino Ferreira da Silva Barros; Guto Santos; Vanderson Sampaio, Maria Gabriela de Almeida Rodrigues, Theodore Lynn and Patricia Takako Endo. <strong>DeepTub++: Um Modelo para Auxiliar no Prognóstico da Tuberculose - Nº BR512022002574-4</strong>. INPI - 2022, <a href="https://busca.inpi.gov.br/pePI/servlet/ProgramaServletController?Action=detail&CodPedido=36910&SearchParameter=#" target="_blank">Publicado <i class="bi bi-journal-text"></i>
+            </a></li> 
+          </ul>
+        </div>
+
+    </div>
+  </section><!-- End About Us Section -->
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>tito</span>
+          </a>
+          <p>Esperamos que a tito possa auxiliar os profissionais de saúde no prognóstico da tuberculose.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Links úteis</h4>
+          <ul>
+            <li><a href="https://www.who.int/pt" target="_blank">OMS</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br"  target="_blank">Ministério da Saúde</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sus"  target="_blank">SUS</a></li>
+            <li><a href="https://portalsinan.saude.gov.br/"  target="_blank">SINAN</a></li>
+          </ul>
+        </div>
+
+        
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contate-nos</h4>
+          <p>
+            R. Benfica, 455 <br>
+            Recife, Pernambuco<br>
+            Brasil <br><br>
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram" target="_blank" style="color:aliceblue"><i class="bi bi-instagram"></i>dotLAB Brazil</a><br>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="copyright credits">
+          Baseado em &copy; Copyright <strong><span>Impact</span></strong> Design estrutural por <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>. Imagens e logomarca feitas por <a href="https://www.instagram.com/davidmarquesart/" class="instagram" target="_blank"><i class="bi bi-instagram"></i>David Marques</a>. Todos os direitos reservados.
+        </div>
+      </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+  <script src="static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+ 
+
+
+</body>
+
+</html>

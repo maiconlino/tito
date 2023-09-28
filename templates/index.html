@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>tito - uma ferramenta para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="static/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/main.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <section id="topbar" class="topbar d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="d-flex align-items-center">dotLab Brazil</i>
+      </div>
+      <div class="social-links d-none d-md-flex align-items-center">
+      <div>  
+        {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+          Olá, <strong>{{ session["nomeCompleto"] }}</strong> seja bem-vindo(a)! <a href="/logout">Sair</a>
+        {% else %}
+            <!-- O código para caso o usuário seja vazio -->
+        {% endif %}
+    
+      </div>
+        <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </section><!-- End Top Bar -->
+
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="static/assets/img/logo.png" alt=""> -->
+        <img src="static/img/tito_logo_fb.png" width="120px" class="scroll-logo d-none">
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="#hero">Início</a></li>
+          <li><a href="#about">Sobre nós</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+          <li><a href="/cadastro">Cadastre-se</a></li>
+          <li><a href="/fazerlogin">Faça login</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+        
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header><!-- End Header -->
+  
+  <script>
+    window.addEventListener('scroll', function() {
+      var scrollLogo = document.querySelector('.scroll-logo');
+      if (window.scrollY > 0) {
+        scrollLogo.classList.remove('d-none');
+      } else {
+        scrollLogo.classList.add('d-none');
+      }
+    });
+  </script>
+  
+  <!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero">
+    <div class="container position-relative">
+      <div class="row gy-5 justify-content-center align-items-center" data-aos="fade-in">
+        <div class="col-lg-6 order-2 order-lg-1 text-center">
+          <img src="static/img/tito_logo_fb.png" width="90%" />
+          <h3>A <strong>tito</strong> é uma ferramenta para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA)</h3>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+            <!--<a href="#about" class="btn-get-started">Começe aqui!</a>
+            <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Veja o vídeo</span></a> -->
+          </div>
+        </div>
+        <!--<div class="col-lg-6 order-1 order-lg-2">
+          <img src="static/assets/img/hero-img.svg" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="100">
+        </div>-->
+      </div>
+    </div>
+    
+
+    <div class="icon-boxes position-relative">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+
+          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-app-indicator"></i></div>
+              <h4 class="title"><a href="/prognostico" class="stretched-link">tito (app)</a></h4>
+            </div>
+          </div><!--End Icon Box -->
+
+          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-diagram-3"></i></div>
+              <h4 class="title">
+                <a href="/acompanhamento" class="stretched-link">Acompanhamento</a>
+              </h4>
+            </div>
+          </div><!--End Icon Box -->
+          
+          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-table"></i></div>
+              <h4 class="title">
+                <a href="/visualizacao" class="stretched-link">Visualização</a>
+              </h4>
+            </div>
+          </div><!--End Icon Box -->
+          
+          <script>
+            function changeContent(element) {
+              // Armazena o conteúdo original
+              element.dataset.originalContent = element.innerHTML;
+            
+              // Altera o texto do link para "Em construção" com o ícone de construção
+              element.innerHTML = '<i class="bi bi-tools"></i> Em construção';
+            }
+            
+            function restoreContent(element) {
+              // Restaura o conteúdo original
+              element.innerHTML = element.dataset.originalContent;
+            }
+            </script>
+            
+          
+          
+
+          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-book"></i></div>
+              <h4 class="title"><a href="/artigospublicados" class="stretched-link">Artigos publicados</a></h4>
+            </div>
+          </div><!--End Icon Box -->
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+  <main id="main">
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2 style="color: #593734;">Sobre nós</h2>
+          <p>A ferramenta tito foi desenvolvida por pesquisadores da Universidade de Pernambuco (UPE) em parceria com a Universidade do Amazonas (UEA), a Fundação de Medicina Tropical (FMT) e o Instituto Todos pela Saúde (ITpS). O nosso objetivo é fornecer aos profissionais de saúde do Sistema Único de Saúde (SUS) uma ferramenta baseada em inteligência artificial que possa auxiliar na tomada de decisão sobre o prognóstico da tuberculose.</p>
+        </div>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <h3 style="color: #593734;">Como essa ferramenta foi desenvolvida?</h3>
+            <img src="static/img/tito_ilustras-01.png" class="img-fluid rounded-4 mb-4" alt="">
+            <p>Através de experimentos científicos utilizando uma base de dados do SINAN-TB e modelos de inteligência artificial que foram treinados e comparados uns com os outros para identificar qual o modelo com o melhor desempenho.</p>
+            <p>Ao final dos experimentos, os pesquisadores constataram que o modelo Support Vector Machine (SVM) teve um melhor desempenho com os dados do SINAN-TB no contexto do prognóstico da tuberculose.</p>
+          </div>
+          <div class="col-lg-6">
+            <div class="content ps-0 ps-lg-5">
+              <p class="fst-italic">
+                O que nós consideramos ao desenvolver o modelo de inteligência artificial presente na tito?
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Pré-processamento transparente e disponível publicamente</li>
+                <li><i class="bi bi-check-circle-fill"></i> Rigoroso método científico nos experimentos</li>
+                <li><i class="bi bi-check-circle-fill"></i> Replicabilidade dos experimentos</li>
+              </ul>
+              <p>
+                Os modelos de inteligência artificial costumam ser fechados. Nós disponibilizamos publicamente todos os artigos científicos dos experimentos realizados, códigos de pré-processamento da base de dados e procedimentos adotados para a seleção do modelo final que compõe tito.
+              </p>
+
+              <div class="position-relative mt-4">
+                <img src="static/img/tito_ilustras-02.png" class="img-fluid rounded-4" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+     <!-- ======= Our Team Section ======= -->
+     <section class="team">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2 style="color: #593734;">Nosso time</h2>
+          <p>Esses são os profissionais/pesquisadores envolvidos na criação da tito</p>
+          
+        </div>
+
+        <div class="row gy-3 section-header">
+            
+          <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+            <div class="member">
+              <img src="static/img/maicon.png" class="img-fluid" alt="">
+              <h4>Maicon Lino</h4>
+              <span>Diretor (LIFE CTI), Doutorando (UPE)</span>
+              <div class="social">
+                <a href="https://twitter.com/mhlfsb" target="_blank"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.instagram.com/mhlfsb/" target="_blank"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/maicon-lino/" target="_blank"><i class="bi bi-linkedin" ></i></a>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+            <div class="member">
+              <img src="static/img/patricia.png" class="img-fluid" alt="">
+              <h4>Patricia endo</h4>
+              <span>Pesquisadora, Professora (UPE)</span>
+              <div class="social">
+                <a href="https://twitter.com/patricia_endo" target="_blank"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.instagram.com/patriciaendo/" target="_blank"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/patricia-takako-endo-8bba69226/" target="_blank"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-xl-4 col-md-3 d-flex" data-aos="fade-up" data-aos-delay="300">
+            <div class="member">
+              <img src="static/img/vandersonsampaio.png" class="img-fluid" alt="">
+              <h4>Vanderon Sampaio</h4>
+              <span>Pesquisador (ITpS), Professor (UEA)</span>
+              <div class="social">
+                <a href="https://twitter.com/vandersons" target="_blank"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.instagram.com/vandersons/" target="_blank"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/vanderson-sampaio-61999929/" target="_blank"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+
+        </div>
+
+      </div>
+    </section><!-- End Our Team Section -->
+
+    <!-- ======= Clients Section ======= -->
+
+    <section class="clients">
+      <div class="container" data-aos="zoom-out">
+
+        <div class="section-header">
+          <h2 style="color: #593734;">Parceiros</h2>          
+        </div>
+
+        <div class="clients-slider swiper">
+          <div class="swiper-wrapper align-items-center">
+            <div class="swiper-slide"><img src="static/img/dotlablogo.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/logoarmazemdacriatividadecaruarupe.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/logodcu.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/upelogo.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/itpslogo.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/uealogo.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/facepelogo.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/pelogo.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="static/img/logofmt_hdv.png" class="img-fluid" alt=""></div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Clients Section -->
+    
+
+    <!-- ======= Stats Counter Section ======= -->
+    <section class="stats-counter">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2 style="color: #593734;">Dados</h2>          
+        </div>
+        <div class="row gy-4 align-items-center">
+          <div class="col-lg-6">
+            <img src="static/img/ilustra3-01.png" alt="" class="img-fluid">
+          </div>
+          <div class="col-lg-6">
+            <div class="stats-item d-flex flex-column flex-lg-row align-items-lg-center">
+              <span data-purecounter-start="0" data-purecounter-end="1712205" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Dados</strong> pré-processados do SINAN-TB</p>
+              
+            </div><!-- End Stats Item -->
+            <div class="stats-item d-flex flex-column flex-lg-row align-items-lg-center">
+              <span data-purecounter-start="0" data-purecounter-end="964099" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Dados</strong> usados para treinar/testar o modelo</p>
+             
+            </div><!-- End Stats Item -->
+            <div class="stats-item d-flex flex-column flex-lg-row align-items-lg-center">
+              <span data-purecounter-start="0" data-purecounter-end="11" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Atributos</strong> que precisam ser preenchidos na tito</p>
+             
+            </div><!-- End Stats Item -->
+          </div>
+        </div>
+      </div>
+    </section><!-- End Stats Counter Section -->
+   
+
+
+    <!-- ======= Frequently Asked Questions Section ======= -->
+    <section id="faq" class="faq">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4">
+            <div class="content px-xl-5">
+              <h3 style="color: #593734;">Perguntas <strong>frequentes</strong></h3>
+              <p>
+                Nós listamos algumas perguntas mais comuns que o profissional de saúde ou um paciente podem ter ao entrarem nesse site da ferramenta tito++.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+
+            <div class="accordion accordion-flush" id="faqlist" data-aos="fade-up" data-aos-delay="100">
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-1">
+                    <span class="num">1.</span>
+                    O resultado de um modelo de inteligência artificial é confiável?
+                  </button>
+                </h3>
+                <div id="faq-content-1" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    A confiabilidade de um modelo de inteligência artificial depende de vários fatores, incluindo a qualidade dos dados de treinamento, o algoritmo utilizado, o processo de treinamento e a adequação do modelo para a tarefa específica. Quando esses fatores são cuidadosamente considerados e abordados, é possível obter resultados confiáveis com a inteligência artificial. No entanto, é importante lembrar que nenhum modelo é perfeito, e sempre existe a possibilidade de erros ou viéses. É essencial realizar avaliações rigorosas, realizar testes e considerar os limites e incertezas associados ao uso de um modelo de inteligência artificial e considerar apenas como informação auxiliar para o acompanhamento do tratamento de um paciente.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-2">
+                    <span class="num">2.</span>
+                    Eu sou um médico, devo considerar o resultado predito pelo modelo como certeza absoluta?
+                  </button>
+                </h3>
+                <div id="faq-content-2" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    <b>Não!</b> A tito é uma plataforma para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA) chamado de Support Vector Machines (SVM).
+                    A ferramenta tito foi criada com o objetivo de auxiliar profissionais de saúde a classificar/prever o prognóstico da tuberculose. Desta forma, um paciente ao ser diagnosticado com tuberculose, e após ter sido registrado no Sistema de Informação de Agravos de Notificação (SINAN), inicia o seu tratamento no Sistema Único de Saúde (SUS) e está apto para ser classificado na plataforma. O profissional de saúde precisa então preencher 11 atributos aos quais incluem dados socio-demográficos, clínicos e larobatoriais.
+                    O resultado da classificação não é um prognóstico médico, mas um resultado predito por um modelo de machine learning (ML) que foi treinado usando a base de dados SINAN-TB de pacientes diagnosticados com tuberculose entre os anos de 2001 a 2020 no Brasil.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-3">
+                    <span class="num">3.</span>
+                    Quantas vezes eu posso simular o prognóstico da tuberculose para o mesmo paciente?
+                  </button>
+                </h3>
+                <div id="faq-content-3" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    Você pode e deve realizar várias simulações para o mesmo paciente, a tito possibilita acompanhar as diversas predições para o mesmo paciente através de uma chave de identificação única que somente você erá acesso para ver a evolução das predições durante o tratamento. Lembre-se que são 11 atributos, e alguns deles podem mudar com o tempo, como por exemplo a quantidade de dias em que um paciente está em tratamento, a atualização dessas informações a cada predição é fundamental para que você possa ter resultados mais coerentes com relação ao prognóstico predito.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-5">
+                    <span class="num">5.</span>
+                    Eu sou um paciente com tuberculose, eu posso realizar a simulação do prognóstico e confiar nessa informação? 
+                  </button>
+                </h3>
+                <div id="faq-content-5" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    Não recomendamos o uso desta plataforma por pacientes que desejam prever o prognóstico da tuberculose. Também não recomendamos suspender ou ascender o tratamento da tuberculose através destes resultados. É de extrema necessidade o acompanhamento por um profissional de saúde qualificado do SUS.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Frequently Asked Questions Section -->
+
+
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>tito</span>
+          </a>
+          <p>Esperamos que a <strong>tito</strong> possa auxiliar os profissionais de saúde no prognóstico da tuberculose.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4 style="text-align: left;">Links úteis</h4>
+          <ul>
+            <li><a href="https://www.who.int/pt" target="_blank">OMS</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br"  target="_blank">Ministério da Saúde</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sus"  target="_blank">SUS</a></li>
+            <li><a href="https://portalsinan.saude.gov.br/"  target="_blank">SINAN</a></li>
+          </ul>
+        </div>
+
+        
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4 style="text-align: left;">Contate-nos</h4>
+          <p>
+            R. Benfica, 455 <br>
+            Recife, Pernambuco<br>
+            Brasil <br><br>
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram" target="_blank" style="color:aliceblue"><i class="bi bi-instagram"></i>dotLAB Brazil</a><br>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+      <div class="copyright credits">
+        Baseado em &copy; Copyright <strong><span>Impact</span></strong> Design estrutural por <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>. Imagens e logomarca feitas por <a href="https://www.instagram.com/davidmarquesart/" class="instagram" target="_blank"><i class="bi bi-instagram"></i>David Marques</a>. Todos os direitos reservados.
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+  <script src="static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+
+</body>
+
+</html>

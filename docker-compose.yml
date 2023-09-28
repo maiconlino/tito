@@ -1,0 +1,19 @@
+version: '3.4'
+services:
+  tito-db:
+    image: mysql:8.0.34
+    container_name: tito-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Hacker22Anos!
+      MYSQL_DATABASE: tito
+      MYSQL_USER: maicon
+      MYSQL_PASSWORD: Hacker23Anos!
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+  tito-app:
+    build: .
+    ports:
+      - 8080:8080

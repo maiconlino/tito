@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>tito - uma ferramenta para auxiliar no prognóstico da tuberculose através de um modelo de inteligência artificial (IA)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="static/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="static/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="static/img/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/main.css" rel="stylesheet">
+    <style>
+        .custom-range::-webkit-slider-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-moz-range-thumb {
+        background: #bb6054;
+        }
+
+        .custom-range::-ms-thumb {
+        background: #bb6054;
+        }
+    </style>
+    <script>
+      // Função para exibir a modal de carregamento
+function exibirModalCarregamento() {
+    $('#loadingModal').modal('show');
+}
+
+// Função para ocultar a modal de carregamento
+function ocultarModalCarregamento() {
+    $('#loadingModal').modal('hide');
+}
+
+
+
+    </script>
+
+    
+</head>
+
+<body>
+
+
+<!-- Modal de carregamento -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loadingModalLabel">Aguarde...</h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa fa-spinner fa-spin fa-3x"></i>
+                    <p>Estamos efetuando <strong>o login</strong>, por favor aguarde.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- ======= Header ======= -->
+  <section id="topbar" class="topbar d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="d-flex align-items-center">dotLab Brazil</i>
+      </div>
+      <div class="social-links d-none d-md-flex align-items-center">
+        <div>  
+          {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+            Olá, <strong>{{ session["nomeCompleto"] }}</strong> seja bem-vindo(a)! <a href="/logout">Sair</a>
+          {% else %}
+              <!-- O código para caso o usuário seja vazio -->
+          {% endif %}
+      
+        </div>
+        <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </section><!-- End Top Bar -->
+
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="static/assets/img/logo.png" alt=""> -->
+        <img src="static/img/tito_logo_fb.png" width="120px" class="scroll-logo d-none">
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/#about">Sobre nós</a></li>
+          <li><a href="/#faq">Perguntas frequentes</a></li>
+          <li><a href="/cadastro">Cadastre-se</a></li>
+          <li><a href="/fazerlogin">Faça login</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header><!-- End Header -->
+  
+  <script>
+    window.addEventListener('scroll', function() {
+      var scrollLogo = document.querySelector('.scroll-logo');
+      if (window.scrollY > 0) {
+        scrollLogo.classList.remove('d-none');
+      } else {
+        scrollLogo.classList.add('d-none');
+      }
+    });
+  </script>
+  
+  <!-- End Header -->
+  <!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero">
+   
+
+
+    <div class="container position-relative">
+      <div class="row gy-5 justify-content-center align-items-center" data-aos="fade-in">
+        <div class="col-lg-6 order-2 order-lg-1 text-center">
+          <img src="static/img/tito_logo_fb.png" width="90%" />
+          <h2><span>Login</span></h2>
+          <h3>Se você é um profissional de saúde, faça login abaixo para ter acesso ao módulo de acompanhamento do paciente.</h3>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="icon-boxes position-relative">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+
+                
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+
+  <main id="main">
+ <!-- ======= About Us Section ======= -->
+ <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+      
+        <h2 id="tituloFormulario">Forneça o seu usuário (e-mail cadastrado) e a sua senha cadastrada.</h2>
+        <form action="/fazerlogin" method="POST" id="FORMULARIOLOGIN"> 
+             
+                  {% if erro == True %}
+                    <div class="alert alert-danger">Não foi possível efetuar o seu login. Usuário ou senha inválidos.</div>
+                  {% else %}
+                  {% endif %}
+                  {% if session["nomeCompleto"] is defined and session["nomeCompleto"]!="" %}
+                     <div class="alert alert-info">Você já está logado no sistema <strong>{{ session["nomeCompleto"] }}</strong>. Acesse a página do prognóstico ou o módulo de acompanhamento do paciente.</div>
+                  {% else %}
+                      <div class="form-group row">
+                        <label for="form_email" class="col-sm-4 col-form-label"><h5>E-mail:</h5></label>
+                        <div class="col-sm-8">
+                          <input type="email" class="form-control form-control-lg" aria-describedby="inputGroup-sizing-lg" id="form_email" placeholder="seuemail@dominio.com.br" name="form_email" required>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="form_sen" class="col-sm-4 col-form-label"><h5>Senha:</h5></label>
+                        <div class="col-sm-8">
+                          <input type="password" class="form-control form-control-lg" aria-describedby="inputGroup-sizing-lg"  id="form_sen" name="form_sen" minlength="6" required>
+                        </div>
+                      </div>
+
+                      
+                      <div class="form-group row">
+                        <small id="mensagemSenha"></small>
+                        <div class="col-md-6 offset-md-3 text-center">
+                          <div id="recaptcha"></div>
+                          <button class="btn btn-danger" type="button" onclick="submeterFormulario()" id="botaoCadastro">Entrar no sistema</button>
+                        </div>
+                      </div>
+                  {% endif %}
+        </form>
+
+    </div>
+  </section><!-- End About Us Section -->
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>tito</span>
+          </a>
+          <p>Esperamos que a tito possa auxiliar os profissionais de saúde no prognóstico da tuberculose.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram"><i class="bi bi-instagram"></i></a>
+
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Links úteis</h4>
+          <ul>
+            <li><a href="https://www.who.int/pt" target="_blank">OMS</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br"  target="_blank">Ministério da Saúde</a></li>
+            <li><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sus"  target="_blank">SUS</a></li>
+            <li><a href="https://portalsinan.saude.gov.br/"  target="_blank">SINAN</a></li>
+          </ul>
+        </div>
+
+        
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contate-nos</h4>
+          <p>
+            R. Benfica, 455 <br>
+            Recife, Pernambuco<br>
+            Brasil <br><br>
+            <a href="https://www.instagram.com/dotlabbrazil/" class="instagram" target="_blank" style="color:aliceblue"><i class="bi bi-instagram"></i>dotLAB Brazil</a><br>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="copyright credits">
+          Baseado em &copy; Copyright <strong><span>Impact</span></strong> Design estrutural por <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>. Imagens e logomarca feitas por <a href="https://www.instagram.com/davidmarquesart/" class="instagram" target="_blank"><i class="bi bi-instagram"></i>David Marques</a>. Todos os direitos reservados.
+        </div>
+      </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+  <script src="static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var alertMessage = document.getElementById("mensagemSenha");
+      var botaoCadastro = document.getElementById("botaoCadastro");
+      var formulario = document.getElementById("FORMULARIOLOGIN");
+
+      botaoCadastro.addEventListener("click", function() {
+        var inputs = formulario.getElementsByTagName("input");
+        var isValid = true;
+  
+        for (var i = 0; i < inputs.length; i++) {
+          if (inputs[i].hasAttribute("required") && inputs[i].value.trim() === "") {
+            isValid = false;
+            break;
+          }
+        }
+
+      
+        if (isValid) {
+          exibirModalCarregamento();
+
+            // Aguardar um breve período para exibir a modal de carregamento antes de enviar o formulário
+            setTimeout(function() {
+                $('#FORMULARIOLOGIN').submit();
+            }, 500); // Ajuste o tempo de espera (em milissegundos) conforme necessário
+        } else {
+          showAlertMessage("Preencha todos os campos eles são obrigatórios.");
+        }
+      });
+  
+      
+      function showAlertMessage(message) {
+        alertMessage.textContent = message;
+        alertMessage.style.display = "block";
+        alertMessage.className = "alert alert-danger";
+        setTimeout(function() {
+          alertMessage.style.opacity = "0";
+          setTimeout(function() {
+            alertMessage.style.display = "none";
+            alertMessage.style.opacity = "1";
+          }, 3000);
+        }, 3000);
+      }
+    });
+  </script>
+
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LeRFkomAAAAAMqtoDBhZb0t9rtCXM4KQX0mtrOg"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var botaoCadastro = document.getElementById('botaoCadastro');
+
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LeRFkomAAAAAMqtoDBhZb0t9rtCXM4KQX0mtrOg', { action: 'botaoCadastro' }).then(function(token) {
+              botaoCadastro.disabled = false;
+            });
+        });
+    });
+</script>
+</body>
+
+</html>
