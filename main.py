@@ -19,7 +19,7 @@ import random
 from pandas_profiling import ProfileReport
 import zipfile
 
-    #import mysql.connector
+import mysql.connector
 
 app = Flask(__name__)
 app.secret_key = '{[L.i.F.e.]*(C.t.I.)}_flask'
@@ -38,23 +38,41 @@ prognosis = ''
 
 
 
-# initialize Connector object
-connector = Connector()
+#BANCOGOOGLE
+# # initialize Connector object
+# connector = Connector()
 
+# # function to return the database connection
+# def getconn() -> pymysql.connections.Connection:
+#     conn: pymysql.connections.Connection = connector.connect(
+#         "deeptub:us-central1:tito",
+#         "pymysql",
+#         user="maicon",
+#         password="Hacker23Anos!",
+#         db="tito"
+#     )
+#     return conn
+
+# # create connection pool
+# pool = sqlalchemy.create_engine(
+#     "mysql+pymysql://",
+#     creator=getconn,
+# )
+
+#BANCOLOCAL - E BANCO AWS LOCAL
 # function to return the database connection
-def getconn() -> pymysql.connections.Connection:
-    conn: pymysql.connections.Connection = connector.connect(
-        "deeptub:us-central1:tito",
-        "pymysql",
-        user="maicon",
-        password="Hacker23Anos!",
-        db="tito"
+def getconn() -> mysql.connector.connection.MySQLConnection:
+    conn: mysql.connector.connection.MySQLConnection = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="tito"
     )
     return conn
 
 # create connection pool
 pool = sqlalchemy.create_engine(
-    "mysql+pymysql://",
+    "mysql+mysqlconnector://",
     creator=getconn,
 )
 
@@ -98,19 +116,24 @@ def index():
 def listar_pacientes():
     if "identificadorUsuario" in session and session["identificadorUsuario"] != "":
     # Aqui você pode verificar as credenciais do usuário em um banco de dados ou qualquer outra lógica desejada.
-        with pool.connect() as db_conn:
-            # insert into database
-            select_Pacientes = sqlalchemy.text("SELECT * FROM tito_pacientes WHERE id_tito_usuarios=:id_tito_usuarios")
-            pacientes = db_conn.execute(select_Pacientes, parameters={"id_tito_usuarios": session['identificadorUsuario']}).fetchall()
-            # Do something with the results
-            db_conn.commit()
-            try:
-                # Seu código aqui que pode gerar um TimeoutError
-                connector.close()  
-            except TimeoutError:
-                # Tratamento do erro TimeoutError
-                pass
-            return pacientes
+        # Abre a conexão
+        db_conn = getconn()
+
+        try:
+            cursor = db_conn.cursor(dictionary=True)
+
+            # Executa a consulta
+            select_Pacientes = "SELECT * FROM tito_pacientes WHERE id_tito_usuarios=%s"
+            cursor.execute(select_Pacientes, (session['identificadorUsuario'],))
+            pacientes = cursor.fetchall()
+
+        finally:
+            # Fecha a conexão
+            db_conn.close()
+
+        # Retorna os pacientes
+        return pacientes
+
     else:
          return ""
 
@@ -156,59 +179,84 @@ def processar_formulario():
 
         if form_paciente != "":
             #existe o paciente selecionado
-            insert_stmt = sqlalchemy.text(
-            """INSERT INTO tito_classificacoes 
-                    (idade, tipo_de_tratamento, radiografia_do_torax, teste_tuberculineo, forma_tuberculose, agravos_doenca_mental, hiv, baciloscopia_1_amostra, baciloscopia_2_amostra, baciloscopia_6_mes, dias_em_tratamento, classificacao_predita, probabilidade_predita, id_tito_usuarios, id_tito_pacientes) 
-                    VALUES 
-                    (:idade, :tipo_de_tratamento, :radiografia_do_torax, :teste_tuberculineo, :forma_tuberculose, :agravos_doenca_mental, :hiv, :baciloscopia_1_amostra, :baciloscopia_2_amostra, :baciloscopia_6_mes, :dias_em_tratamento, :classificacao_predita, :probabilidade_predita, :id_tito_usuarios, :id_tito_pacientes)"""
+            # Preparação da query de inserção
+            insert_stmt = """
+                INSERT INTO tito_classificacoes 
+                (idade, tipo_de_tratamento, radiografia_do_torax, teste_tuberculineo, forma_tuberculose, agravos_doenca_mental, hiv, baciloscopia_1_amostra, baciloscopia_2_amostra, baciloscopia_6_mes, dias_em_tratamento, classificacao_predita, probabilidade_predita, id_tito_usuarios, id_tito_pacientes) 
+                VALUES 
+                ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
+            """.format(
+                form_idade_do_paciente, form_tipo_de_tratamento, form_radiografia_torax, form_teste_tuberculinio, form_forma_da_tuberculose, form_agravos_doenca_mental, form_hiv, form_bacilosc_e, form_bacilosc_e2, form_bacilosc_6, form_dias_em_tratamento, prognosis[0], value, session["identificadorUsuario"], form_paciente
             )
-            with pool.connect() as db_conn:
-                # insert into database
-                db_conn.execute(insert_stmt, parameters={"idade": form_idade_do_paciente, "tipo_de_tratamento": form_tipo_de_tratamento, "radiografia_do_torax": form_radiografia_torax, "teste_tuberculineo":form_teste_tuberculinio, "forma_tuberculose":form_forma_da_tuberculose, "agravos_doenca_mental":form_agravos_doenca_mental, "hiv":form_hiv, "baciloscopia_1_amostra":form_bacilosc_e, "baciloscopia_2_amostra":form_bacilosc_e2, "baciloscopia_6_mes":form_bacilosc_6, "dias_em_tratamento":form_dias_em_tratamento, "classificacao_predita":prognosis[0], "probabilidade_predita":value, "id_tito_usuarios":session["identificadorUsuario"], "id_tito_pacientes": form_paciente})
+
+            # Abre a conexão
+            db_conn = getconn()
+
+            try:
+                cursor = db_conn.cursor(dictionary=True)
+
+                # Executar a inserção
+                cursor.execute(insert_stmt)
                 db_conn.commit()
-                try:
-                    # Seu código aqui que pode gerar um TimeoutError
-                    connector.close()  
-                except TimeoutError:
-                    # Tratamento do erro TimeoutError
-                    pass
+
+            finally:
+                # Fecha a conexão
+                db_conn.close()
+
+
         else:     
-            # insert statement
-            insert_stmt = sqlalchemy.text(
-                """INSERT INTO tito_classificacoes 
-                        (idade, tipo_de_tratamento, radiografia_do_torax, teste_tuberculineo, forma_tuberculose, agravos_doenca_mental, hiv, baciloscopia_1_amostra, baciloscopia_2_amostra, baciloscopia_6_mes, dias_em_tratamento, classificacao_predita, probabilidade_predita, id_tito_usuarios) 
-                        VALUES 
-                        (:idade, :tipo_de_tratamento, :radiografia_do_torax, :teste_tuberculineo, :forma_tuberculose, :agravos_doenca_mental, :hiv, :baciloscopia_1_amostra, :baciloscopia_2_amostra, :baciloscopia_6_mes, :dias_em_tratamento, :classificacao_predita, :probabilidade_predita, :id_tito_usuarios)"""
-            )
-            with pool.connect() as db_conn:
-                # insert into database
-                db_conn.execute(insert_stmt, parameters={"idade": form_idade_do_paciente, "tipo_de_tratamento": form_tipo_de_tratamento, "radiografia_do_torax": form_radiografia_torax, "teste_tuberculineo":form_teste_tuberculinio, "forma_tuberculose":form_forma_da_tuberculose, "agravos_doenca_mental":form_agravos_doenca_mental, "hiv":form_hiv, "baciloscopia_1_amostra":form_bacilosc_e, "baciloscopia_2_amostra":form_bacilosc_e2, "baciloscopia_6_mes":form_bacilosc_6, "dias_em_tratamento":form_dias_em_tratamento, "classificacao_predita":prognosis[0], "probabilidade_predita":value, "id_tito_usuarios":session["identificadorUsuario"]})
-                db_conn.commit()
-                try:
-                    # Seu código aqui que pode gerar um TimeoutError
-                    connector.close()  
-                except TimeoutError:
-                    # Tratamento do erro TimeoutError
-                    pass
+            # Preparação da query de inserção
+            insert_stmt = """
+            INSERT INTO tito_classificacoes 
+            (idade, tipo_de_tratamento, radiografia_do_torax, teste_tuberculineo, forma_tuberculose, agravos_doenca_mental, hiv, baciloscopia_1_amostra, baciloscopia_2_amostra, baciloscopia_6_mes, dias_em_tratamento, classificacao_predita, probabilidade_predita, id_tito_usuarios) 
+            VALUES 
+            ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
+        """.format(
+            form_idade_do_paciente, form_tipo_de_tratamento, form_radiografia_torax, form_teste_tuberculinio, form_forma_da_tuberculose, form_agravos_doenca_mental, form_hiv, form_bacilosc_e, form_bacilosc_e2, form_bacilosc_6, form_dias_em_tratamento, prognosis[0], value, session["identificadorUsuario"]
+        )
+
+        # Abre a conexão
+        db_conn = getconn()
+
+        try:
+            cursor = db_conn.cursor(dictionary=True)
+
+            # Executar a inserção
+            cursor.execute(insert_stmt)
+            db_conn.commit()
+
+        finally:
+            # Fecha a conexão
+            db_conn.close()
+
+
         
     else:
-        insert_stmt = sqlalchemy.text(
-            """INSERT INTO tito_classificacoes 
-                    (idade, tipo_de_tratamento, radiografia_do_torax, teste_tuberculineo, forma_tuberculose, agravos_doenca_mental, hiv, baciloscopia_1_amostra, baciloscopia_2_amostra, baciloscopia_6_mes, dias_em_tratamento, classificacao_predita, probabilidade_predita) 
-                    VALUES 
-                    (:idade, :tipo_de_tratamento, :radiografia_do_torax, :teste_tuberculineo, :forma_tuberculose, :agravos_doenca_mental, :hiv, :baciloscopia_1_amostra, :baciloscopia_2_amostra, :baciloscopia_6_mes, :dias_em_tratamento, :classificacao_predita, :probabilidade_predita)"""
+        # Preparação da query de inserção
+        insert_stmt = """
+            INSERT INTO tito_classificacoes 
+            (idade, tipo_de_tratamento, radiografia_do_torax, teste_tuberculineo, forma_tuberculose, agravos_doenca_mental, hiv, baciloscopia_1_amostra, baciloscopia_2_amostra, baciloscopia_6_mes, dias_em_tratamento, classificacao_predita, probabilidade_predita) 
+            VALUES 
+            ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
+        """.format(
+            form_idade_do_paciente, form_tipo_de_tratamento, form_radiografia_torax, form_teste_tuberculinio, form_forma_da_tuberculose, form_agravos_doenca_mental, form_hiv, form_bacilosc_e, form_bacilosc_e2, form_bacilosc_6, form_dias_em_tratamento, prognosis[0], value
         )
-        with pool.connect() as db_conn:
-            # insert into database
-            db_conn.execute(insert_stmt, parameters={"idade": form_idade_do_paciente, "tipo_de_tratamento": form_tipo_de_tratamento, "radiografia_do_torax": form_radiografia_torax, "teste_tuberculineo":form_teste_tuberculinio, "forma_tuberculose":form_forma_da_tuberculose, "agravos_doenca_mental":form_agravos_doenca_mental, "hiv":form_hiv, "baciloscopia_1_amostra":form_bacilosc_e, "baciloscopia_2_amostra":form_bacilosc_e2, "baciloscopia_6_mes":form_bacilosc_6, "dias_em_tratamento":form_dias_em_tratamento, "classificacao_predita":prognosis[0], "probabilidade_predita":value})
-            db_conn.commit()
-        #connector.close()
+
+        # Abre a conexão
+        db_conn = getconn()
+
         try:
-            # Seu código aqui que pode gerar um TimeoutError
-            connector.close()  
-        except TimeoutError:
-            # Tratamento do erro TimeoutError
-            pass
+            cursor = db_conn.cursor(dictionary=True)
+
+            # Executar a inserção
+            cursor.execute(insert_stmt)
+            db_conn.commit()
+
+        finally:
+            # Fecha a conexão
+            db_conn.close()
+
+
     
 
     ListaResultado = []
@@ -286,35 +334,89 @@ def cadastro():
             # Exibir a senha criptografada
             #print(senha_criptografada.decode('utf-8'))
              # insert statement
-            insert_stmt = sqlalchemy.text("""INSERT INTO tito_usuarios 
-                        (nomeCompleto, cpf, senhaCriptografada, email, salt) 
-                        VALUES 
-                        (:nomeCompleto, :cpf, :senhaCriptografada, :email, :salt)""",
-            )
+            #google
+            # insert_stmt = sqlalchemy.text("""INSERT INTO tito_usuarios 
+            #             (nomeCompleto, cpf, senhaCriptografada, email, salt) 
+            #             VALUES 
+            #             (:nomeCompleto, :cpf, :senhaCriptografada, :email, :salt)""",
+            # )
 
-            with pool.connect() as db_conn:
-                # insert into database
-                select_Email = sqlalchemy.text("SELECT * from tito_usuarios WHERE email=:email or cpf=:cpf")
-                result = db_conn.execute(select_Email, parameters={"email": form_email, "cpf": form_cpf}).fetchall()
-                #result = db_conn.execute(sqlalchemy.text("SELECT * from tito_usuarios WHERE email='"+form_email+"' OR cpf='"+form_cpf+"")).fetchall()
-                # Do something with the results
+            # with pool.connect() as db_conn:
+            #     # insert into database
+            #     select_Email = sqlalchemy.text("SELECT * from tito_usuarios WHERE email=:email or cpf=:cpf")
+            #     result = db_conn.execute(select_Email, parameters={"email": form_email, "cpf": form_cpf}).fetchall()
+            #     #result = db_conn.execute(sqlalchemy.text("SELECT * from tito_usuarios WHERE email='"+form_email+"' OR cpf='"+form_cpf+"")).fetchall()
+            #     # Do something with the results
 
-                db_conn.commit()
+            #     db_conn.commit()
+            #     for row in result:
+            #         if row[4]==form_email or row[2]==form_cpf:
+            #             submissao = False
+            #             jaExisteNoBancoDeDados = True
+            #             break
+            #     if not(jaExisteNoBancoDeDados):
+            #              db_conn.execute(insert_stmt, parameters={"nomeCompleto": form_nome_completo,"cpf": form_cpf,"senhaCriptografada": senha_criptografada,"email": form_email,"salt": salt})
+            #              db_conn.commit()
+
+            # try:
+            # # Seu código aqui que pode gerar um TimeoutError
+            #     connector.close()  
+            # except TimeoutError:
+            #     # Tratamento do erro TimeoutError
+            #     pass
+
+            #aws local
+            # INSERT statement
+            insert_stmt = """
+                INSERT INTO tito_usuarios 
+                (nomeCompleto, cpf, senhaCriptografada, email, salt) 
+                VALUES 
+                (%(nomeCompleto)s, %(cpf)s, %(senhaCriptografada)s, %(email)s, %(salt)s)
+            """
+
+            # Verificação de e-mail e CPF existentes
+            select_Email = """
+                SELECT * FROM tito_usuarios 
+                WHERE email=%(email)s OR cpf=%(cpf)s
+            """
+
+            db_conn = getconn()
+
+            try:
+                cursor = db_conn.cursor(dictionary=True)
+
+                # Verificar se o e-mail ou CPF já existem no banco de dados
+                cursor.execute(
+                    select_Email, 
+                    {"email": form_email, "cpf": form_cpf}
+                )
+
+                result = cursor.fetchall()
+
                 for row in result:
-                    if row[4]==form_email or row[2]==form_cpf:
+                    if row['email'] == form_email or row['cpf'] == form_cpf:
                         submissao = False
                         jaExisteNoBancoDeDados = True
                         break
-                if not(jaExisteNoBancoDeDados):
-                         db_conn.execute(insert_stmt, parameters={"nomeCompleto": form_nome_completo,"cpf": form_cpf,"senhaCriptografada": senha_criptografada,"email": form_email,"salt": salt})
-                         db_conn.commit()
 
-            try:
-            # Seu código aqui que pode gerar um TimeoutError
-                connector.close()  
-            except TimeoutError:
-                # Tratamento do erro TimeoutError
-                pass
+                if not jaExisteNoBancoDeDados:
+                    # Executar a inserção
+                    cursor.execute(
+                        insert_stmt, 
+                        {
+                            "nomeCompleto": form_nome_completo,
+                            "cpf": form_cpf,
+                            "senhaCriptografada": senha_criptografada,
+                            "email": form_email,
+                            "salt": salt
+                        }
+                    )
+                    db_conn.commit()
+
+            finally:
+                # Fechar a conexão
+                db_conn.close()
+
              
         return render_template('cadastro.html', submissao=submissao, vazio=vazio, lenSenhaMenorQue6=lenSenhaMenorQue6, lenSenhaMenorQue6Confirmacao=lenSenhaMenorQue6Confirmacao, senhasIguais=senhasIguais, teste=senha_criptografada, jaExisteNoBancoDeDados=jaExisteNoBancoDeDados)
 
@@ -327,20 +429,55 @@ def validar_email():
     email = request.form.get('email')  # Obtenha o valor do campo de e-mail enviado pelo AJAX
     # Verifique se o e-mail já está cadastrado no banco de dados
     tamResult = 0
-    with pool.connect() as db_conn:
-                 # insert into database
-                 select_Email = sqlalchemy.text("SELECT * from tito_usuarios WHERE email=:email")
-                 result = db_conn.execute(select_Email, parameters={"email": email}).fetchall()
-                 # Do something with the results
-                 db_conn.commit()
-                 tamResult = len(result)
-                 try:
-                     # Seu código aqui que pode gerar um TimeoutError
-                     connector.close()  
-                 except TimeoutError:
-                     # Tratamento do erro TimeoutError
-                     pass
+    #gogole
+    # with pool.connect() as db_conn:
+    #              # insert into database
+    #              select_Email = sqlalchemy.text("SELECT * from tito_usuarios WHERE email=:email")
+    #              result = db_conn.execute(select_Email, parameters={"email": email}).fetchall()
+    #              # Do something with the results
+    #              db_conn.commit()
+    #              tamResult = len(result)
+    #              try:
+    #                  # Seu código aqui que pode gerar um TimeoutError
+    #                  connector.close()  
+    #              except TimeoutError:
+    #                  # Tratamento do erro TimeoutError
+    #                  pass
     
+    #aws local
+    # Verificação de e-mail existente
+    select_Email = """
+        SELECT * FROM tito_usuarios 
+        WHERE email=%(email)s
+    """
+
+    # Abre a conexão
+    db_conn = getconn()
+
+    try:
+        cursor = db_conn.cursor(dictionary=True)
+
+        # Verificar se o e-mail existe no banco de dados
+        cursor.execute(
+            select_Email, 
+            {"email": email}
+        )
+
+        result = cursor.fetchall()
+
+        # Operação de commit
+        db_conn.commit()
+
+        tamResult = len(result)
+
+        for row in result:
+            # Do something with the results
+            pass
+
+    finally:
+        # Fecha a conexão
+        db_conn.close()
+
     email_cadastrado = False
     if tamResult>0:
         email_cadastrado = True
@@ -355,20 +492,56 @@ def validar_cpf():
     cpf = request.form.get('cpf')  # Obtenha o valor do campo de e-mail enviado pelo AJAX
     # Verifique se o e-mail já está cadastrado no banco de dados
     tamResult = 0
-    with pool.connect() as db_conn:
-                 # insert into database
-                 select_Cpf = sqlalchemy.text("SELECT * from tito_usuarios WHERE cpf=:cpf")
-                 result = db_conn.execute(select_Cpf, parameters={"cpf": cpf}).fetchall()
-                 # Do something with the results
-                 db_conn.commit()
-                 tamResult = len(result)
-                 try:
-                     # Seu código aqui que pode gerar um TimeoutError
-                     connector.close()  
-                 except TimeoutError:
-                     # Tratamento do erro TimeoutError
-                     pass
+    #google
+    # with pool.connect() as db_conn:
+    #              # insert into database
+    #              select_Cpf = sqlalchemy.text("SELECT * from tito_usuarios WHERE cpf=:cpf")
+    #              result = db_conn.execute(select_Cpf, parameters={"cpf": cpf}).fetchall()
+    #              # Do something with the results
+    #              db_conn.commit()
+    #              tamResult = len(result)
+    #              try:
+    #                  # Seu código aqui que pode gerar um TimeoutError
+    #                  connector.close()  
+    #              except TimeoutError:
+    #                  # Tratamento do erro TimeoutError
+    #                  pass
     
+    #aws local
+    # Verificação de CPF existente
+    select_Cpf = """
+        SELECT * FROM tito_usuarios 
+        WHERE cpf=%(cpf)s
+    """
+
+    # Abre a conexão
+    db_conn = getconn()
+
+    try:
+        cursor = db_conn.cursor(dictionary=True)
+
+        # Verificar se o CPF existe no banco de dados
+        cursor.execute(
+            select_Cpf, 
+            {"cpf": cpf}
+        )
+
+        result = cursor.fetchall()
+
+        # Operação de commit
+        db_conn.commit()
+
+        tamResult = len(result)
+
+        for row in result:
+            # Do something with the results
+            pass
+
+    finally:
+        # Fecha a conexão
+        db_conn.close()
+
+
     cpf_cadastrado = False
     if tamResult>0:
         cpf_cadastrado = True
@@ -391,33 +564,74 @@ def login():
         # Obter os dados do formulário
         email = request.form['form_email']
         sen = request.form['form_sen']
-        
-        # Aqui você pode verificar as credenciais do usuário em um banco de dados ou qualquer outra lógica desejada.
-        with pool.connect() as db_conn:
-                    # insert into database
-                    select_Cpf = sqlalchemy.text("SELECT senhaCriptografada, nomeCompleto, salt, id FROM tito_usuarios WHERE email=:email")
-                    result = db_conn.execute(select_Cpf, parameters={"email": email}).fetchall()
-                    # Do something with the results
-                    db_conn.commit()
-                    tamResult = len(result)
-                    try:
-                        # Seu código aqui que pode gerar um TimeoutError
-                        connector.close()  
-                    except TimeoutError:
-                        # Tratamento do erro TimeoutError
-                        pass
+
+       
+        #google bd
+        # # Aqui você pode verificar as credenciais do usuário em um banco de dados ou qualquer outra lógica desejada.
+        # with pool.connect() as db_conn:
+        #             # insert into database
                     
-                    if tamResult>0:
-                        senhaCriptografada = result[0][0]
-                        if bcrypt.checkpw(sen.encode('utf-8'),senhaCriptografada.encode('utf-8')):
-                            session['username'] = email
-                            session['nomeCompleto'] = result[0][1]
-                            session['identificadorUsuario'] = result[0][3]
-                            return redirect(url_for('painelacompanhamento'))
-                        else:
-                            return render_template('efetuarlogin.html', erro=True)
-                    else:
-                            return render_template('efetuarlogin.html', erro=True)
+        #             select_Cpf = sqlalchemy.text("SELECT senhaCriptografada, nomeCompleto, salt, id FROM tito_usuarios WHERE email=:email")
+        #             result = db_conn.execute(select_Cpf, parameters={"email": email}).fetchall()
+        #             # Do something with the results
+        #             db_conn.commit()
+        #             tamResult = len(result)
+        #             try:
+        #                 # Seu código aqui que pode gerar um TimeoutError
+        #                 connector.close()  
+        #             except TimeoutError:
+        #                 # Tratamento do erro TimeoutError
+        #                 pass
+                    
+        #             if tamResult>0:
+        #                 senhaCriptografada = result[0][0]
+        #                 if bcrypt.checkpw(sen.encode('utf-8'),senhaCriptografada.encode('utf-8')):
+        #                     session['username'] = email
+        #                     session['nomeCompleto'] = result[0][1]
+        #                     session['identificadorUsuario'] = result[0][3]
+        #                     return redirect(url_for('painelacompanhamento'))
+        #                 else:
+        #                     return render_template('efetuarlogin.html', erro=True)
+        #             else:
+        #                     return render_template('efetuarlogin.html', erro=True)
+
+        #aws banco local
+        # Exemplo de SELECT usando MySQL Connector Python
+        # Abre a conexão
+        # Abre a conexão
+        db_conn = getconn()
+
+        try:
+            cursor = db_conn.cursor(dictionary=True)
+            select_query = "SELECT senhaCriptografada, nomeCompleto, salt, id FROM tito_usuarios WHERE email=%s"
+            cursor.execute(select_query, (email,))
+            
+            # Obtenha os resultados
+            result = cursor.fetchall()
+
+            # Verifique se há resultados
+            tamResult = len(result)
+            
+            if tamResult > 0:
+                # Operação de commit
+                db_conn.commit()
+
+                senhaCriptografada = result[0]['senhaCriptografada']
+                
+                if bcrypt.checkpw(sen.encode('utf-8'),senhaCriptografada.encode('utf-8')):
+                    session['username'] = email
+                    session['nomeCompleto'] = result[0]['nomeCompleto']
+                    session['identificadorUsuario'] = result[0]['id']
+                    return redirect(url_for('painelacompanhamento'))
+                else:
+                    return render_template('efetuarlogin.html', erro=True)
+            else:
+                return render_template('efetuarlogin.html', erro=True)
+        finally:
+            # Fecha a conexão
+            db_conn.close()
+
+        
     return render_template('efetuarlogin.html')
 
 
@@ -463,19 +677,24 @@ def pacientes_ver():
 def listar_evolucao_do_pacinete_medico(paciente_id):
     if "identificadorUsuario" in session and session["identificadorUsuario"] != "":
     # Aqui você pode verificar as credenciais do usuário em um banco de dados ou qualquer outra lógica desejada.
-        with pool.connect() as db_conn:
-            # insert into database
-            select_Pacientes = sqlalchemy.text("SELECT * FROM tito_classificacoes WHERE id_tito_usuarios=:id_tito_usuarios AND id_tito_pacientes=:id_tito_pacientes ORDER BY dataHora")
-            pacientes = db_conn.execute(select_Pacientes, parameters={"id_tito_usuarios": session['identificadorUsuario'], "id_tito_pacientes": paciente_id}).fetchall()
-            # Do something with the results
-            db_conn.commit()
-            try:
-                # Seu código aqui que pode gerar um TimeoutError
-                connector.close()  
-            except TimeoutError:
-                # Tratamento do erro TimeoutError
-                pass
-            return pacientes
+        # Abre a conexão
+        db_conn = getconn()
+
+        try:
+            cursor = db_conn.cursor(dictionary=True)
+
+            # Executa a consulta
+            select_Pacientes = "SELECT * FROM tito_classificacoes WHERE id_tito_usuarios=%s AND id_tito_pacientes=%s ORDER BY dataHora"
+            cursor.execute(select_Pacientes, (session['identificadorUsuario'], paciente_id))
+            pacientes = cursor.fetchall()
+
+        finally:
+            # Fecha a conexão
+            db_conn.close()
+
+        # Retorna os pacientes
+        return pacientes
+
     else:
          return ""
 
@@ -546,22 +765,37 @@ def cadastrarpaciente():
             submissao = True
 
              # insert statement
-            insert_stmt = sqlalchemy.text("""INSERT INTO tito_pacientes 
-                        (nomeCompletoAbreviadoComIdCriptografado, apelidoAlias, dataDoDiagnostico, id_tito_usuarios) 
-                        VALUES 
-                        (:nomeCompletoAbreviadoComIdCriptografado, :apelidoAlias, :dataDoDiagnostico, :id_tito_usuarios)""",
+            # Abre a conexão
+        db_conn = getconn()
+
+        try:
+            cursor = db_conn.cursor(dictionary=True)
+
+            # Preparação da consulta
+            insert_stmt = """
+                INSERT INTO tito_pacientes 
+                (nomeCompletoAbreviadoComIdCriptografado, apelidoAlias, dataDoDiagnostico, id_tito_usuarios) 
+                VALUES 
+                (%s, %s, %s, %s)
+            """
+
+            # Executa a inserção
+            cursor.execute(
+                insert_stmt,
+                (
+                    form_apelidoCript,
+                    form_apelido,
+                    form_dataDiagnostico,
+                    session['identificadorUsuario']
+                )
             )
 
-            with pool.connect() as db_conn:
+            db_conn.commit()
 
-                         db_conn.execute(insert_stmt, parameters={"nomeCompletoAbreviadoComIdCriptografado": form_apelidoCript,"apelidoAlias": form_apelido,"dataDoDiagnostico": form_dataDiagnostico,"id_tito_usuarios":  session['identificadorUsuario']})
-                         db_conn.commit()
-            try:
-            # Seu código aqui que pode gerar um TimeoutError
-                connector.close()  
-            except TimeoutError:
-                # Tratamento do erro TimeoutError
-                pass
+        finally:
+            # Fecha a conexão
+            db_conn.close()
+
              
         return render_template('pacientes.html', submissao=submissao, paciente=form_apelidoCript)
 
